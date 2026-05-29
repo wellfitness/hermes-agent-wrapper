@@ -1,0 +1,15 @@
+# Archivos que NO deben entrar en el .vsix.
+# El código ya va empaquetado en dist/extension.js (webpack), así que
+# excluimos fuentes, dependencias y configs de desarrollo.
+.vscode/**
+.vscode-test/**
+src/**
+node_modules/**
+**/*.ts
+**/*.map
+webpack.config.js
+tsconfig.json
+eslint.config.js
+pnpm-lock.yaml
+.gitignore
+.editorconfig

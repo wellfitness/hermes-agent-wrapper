@@ -1,0 +1,15 @@
+# Dependencias y artefactos de build
+node_modules/
+dist/
+
+# Paquetes empaquetados de la extensión
+*.vsix
+
+# Logs y variables de entorno (¡nunca subir secretos!)
+*.log
+.env
+.env.*
+
+# Sistema
+.DS_Store
+Thumbs.db

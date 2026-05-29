@@ -1,0 +1,8 @@
+# Dependencias y artefactos de build
+node_modules/
+dist/
+
+# Logs y entorno
+*.log
+.env
+.env.*

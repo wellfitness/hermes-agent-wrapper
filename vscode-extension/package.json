@@ -1,0 +1,70 @@
+{
+  "name": "hermes-agent-ui",
+  "displayName": "Hermes Agent UI",
+  "description": "Visual UI/UX wrapper for Hermes Agent",
+  "version": "0.0.10",
+  "publisher": "movimiento-funcional",
+  "icon": "media/hermes-icon-128.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hermesAgentUI-container",
+          "title": "Hermes Agent",
+          "icon": "media/hermes-icon-128.png"
+        }
+      ]
+    },
+    "views": {
+      "hermesAgentUI-container": [
+        {
+          "id": "hermesAgentUI.view",
+          "name": "Hermes Agent",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "hermesAgentUI.start",
+        "title": "Start Hermes Agent UI"
+      }
+    ],
+    "configuration": {
+      "title": "Hermes Agent UI",
+      "properties": {
+        "hermesAgentUI.model": {
+          "type": "string",
+          "default": "",
+          "description": "Opcional. Déjalo VACÍO para usar el modelo por defecto de Hermes (configurado con `hermes model`). Rellénalo solo para forzar un modelo concreto (ej. MiniMax-M2.7)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "lint": "eslint src",
+    "package": "webpack --mode production --devtool hidden-source-map"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/vscode": "^1.85.0",
+    "@types/node": "18.x",
+    "eslint": "^9.13.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.10.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "ts-loader": "^9.5.1"
+  }
+}

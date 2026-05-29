@@ -1,0 +1,11 @@
+# Dependencias y artefactos de build
+node_modules/
+dist/
+
+# Paquetes empaquetados de la extensión
+*.vsix
+
+# Logs y entorno
+*.log
+.env
+.env.*

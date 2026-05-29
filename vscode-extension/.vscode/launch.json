@@ -1,0 +1,19 @@
+{
+  // Lanza la extensión en una ventana "Extension Development Host".
+  // Pulsa F5 con esta configuración seleccionada.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "preLaunchTask": "compile"
+    }
+  ]
+}

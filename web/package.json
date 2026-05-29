@@ -1,0 +1,26 @@
+{
+  "name": "hermes-web",
+  "version": "0.1.0",
+  "description": "Wrapper web (localhost) para Hermes Agent: la misma UI de chat de la extension, servida en el navegador via WebSocket.",
+  "private": true,
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -w -p tsconfig.json",
+    "lint": "eslint src",
+    "prestart": "pnpm run build",
+    "start": "node dist/server.js",
+    "serve": "node dist/server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/node": "18.x",
+    "@types/ws": "^8.5.12",
+    "eslint": "^9.13.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.10.0"
+  }
+}

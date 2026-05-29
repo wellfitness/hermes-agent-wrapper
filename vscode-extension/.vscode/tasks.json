@@ -1,0 +1,33 @@
+{
+  // Tareas de build con pnpm (NO npm).
+  // "compile" es la tarea por defecto y la que F5 ejecuta antes de lanzar.
+  // "watch" recompila en cada cambio; lánzala con "Run Task > watch".
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compile",
+      "type": "shell",
+      "command": "pnpm run compile",
+      "problemMatcher": "$tsc",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "watch",
+      "type": "shell",
+      "command": "pnpm run watch",
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": {
+        "reveal": "never",
+        "group": "watchers"
+      }
+    }
+  ]
+}

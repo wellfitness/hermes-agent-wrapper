@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes Agent UI</title>
+  <link rel="icon" type="image/png" href="/hermes-icon-128.png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=ABeeZee&family=Righteous&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>
+      <img class="brand-logo" src="/hermes-icon-128.png" alt="" aria-hidden="true" />
+      Hermes Agent
+    </h1>
+    <button type="button" id="model-container" class="model-badge" title="Cambiar modelo"
+            aria-haspopup="listbox" aria-expanded="false" aria-controls="model-menu" aria-label="Estado: iniciando. Pulsa para cambiar de modelo.">
+      <span class="status-dot connecting" aria-hidden="true"></span>
+      <span>Iniciando...</span>
+    </button>
+    <div id="model-menu" class="popup-menu model-menu" role="listbox" aria-label="Modelos disponibles" hidden></div>
+  </header>
+
+  <main class="chat-area" id="chat-container" role="log" aria-live="polite" aria-label="Conversación con Hermes Agent">
+    <div class="empty-state" id="empty-state">
+      <span class="empty-icon"><img class="empty-logo" src="/hermes-icon-128.png" alt="" aria-hidden="true" /></span>
+      <h2>Hermes Agent</h2>
+      <p>Tu asistente está listo. Escribe una petición abajo, o pulsa <kbd>/</kbd> para explorar los comandos disponibles.</p>
+    </div>
+  </main>
+
+  <footer class="input-area">
+    <div id="activity-indicator" class="activity-indicator" role="status" aria-live="polite" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span class="activity-pulse" aria-hidden="true"></span>
+      <span class="activity-text" id="activity-text">Hermes está pensando...</span>
+    </div>
+    <div class="composer-toolbar" role="toolbar" aria-label="Acciones de conversación">
+      <button type="button" class="tool-btn" id="btn-commands" title="Comandos disponibles"
+              aria-haspopup="listbox" aria-expanded="false" aria-controls="command-menu">
+        <span class="material-icons" aria-hidden="true">bolt</span>Comandos
+      </button>
+      <button type="button" class="tool-btn" id="btn-clear" title="Limpiar conversación (/reset)">
+        <span class="material-icons" aria-hidden="true">delete_sweep</span>Limpiar
+      </button>
+      <button type="button" class="tool-btn" id="btn-compact" title="Compactar contexto (/compact)">
+        <span class="material-icons" aria-hidden="true">compress</span>Compactar
+      </button>
+    </div>
+    <form id="chat-form" class="input-wrapper">
+      <label for="prompt" class="sr-only">Mensaje para Hermes Agent</label>
+      <input type="text" id="prompt" placeholder="Escribe un comando o petición... (escribe / para ver comandos)" disabled required autocomplete="off"
+             role="combobox" aria-expanded="false" aria-controls="command-menu" aria-autocomplete="list" />
+      <button type="submit" id="send" class="btn-primary" disabled aria-label="Enviar mensaje">
+        <span class="material-icons" aria-hidden="true">send</span>
+        Enviar
+      </button>
+    </form>
+    <div id="command-menu" class="popup-menu command-menu" role="listbox" aria-label="Comandos disponibles" hidden></div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
