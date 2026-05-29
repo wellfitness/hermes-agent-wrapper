@@ -46,7 +46,16 @@ export class AcpClient {
 
   constructor(hermesExe: string, cwd: string) {
     this.cwd = cwd;
-    this.proc = spawn(hermesExe, ['acp'], { cwd, env: { ...process.env } });
+    // En Unix lanzamos a Hermes como líder de su propio grupo de procesos
+    // (`detached`) para poder matar el árbol entero —hermes + el subproceso
+    // Python del agente— con un único kill al grupo (ver dispose). En Windows
+    // no se usa: allí matamos el árbol con `taskkill /t` y `detached` abriría
+    // una consola nueva.
+    this.proc = spawn(hermesExe, ['acp'], {
+      cwd,
+      env: { ...process.env },
+      detached: process.platform !== 'win32',
+    });
 
     const rl = readline.createInterface({ input: this.proc.stdout!, terminal: false });
     rl.on('line', (line) => this.handleLine(line));
@@ -214,19 +223,45 @@ export class AcpClient {
   }
 
   dispose(): void {
+    const pid = this.proc.pid;
+    // Cerramos las tuberías antes de matar: no queremos seguir escuchando a un
+    // proceso que estamos terminando.
     try {
-      // En Windows, kill('SIGTERM') solo termina hermes.exe, no su árbol de
-      // procesos (el python.exe del agente quedaría huérfano). taskkill /t mata
-      // el árbol completo.
-      if (process.platform === 'win32' && typeof this.proc.pid === 'number') {
-        execFile('taskkill', ['/pid', String(this.proc.pid), '/t', '/f'], () => { /* ignorar errores: puede que ya esté muerto */ });
-      }
       this.proc.stdin?.destroy();
       this.proc.stdout?.destroy();
       this.proc.stderr?.destroy();
-      this.proc.kill('SIGTERM');
     } catch {
-      // proceso ya muerto: nada que hacer
+      // tuberías ya cerradas: nada que hacer
     }
+
+    if (typeof pid !== 'number') {
+      return;
+    }
+
+    if (process.platform === 'win32') {
+      // Windows: kill('SIGTERM') solo termina hermes.exe, no su árbol (el
+      // python.exe del agente quedaría huérfano). taskkill /t mata el árbol.
+      execFile('taskkill', ['/pid', String(pid), '/t', '/f'], () => { /* puede que ya esté muerto */ });
+      return;
+    }
+
+    // Unix: el proceso es líder de su grupo (spawn con detached), así que un
+    // PID negativo manda la señal a TODO el grupo —hermes y sus hijos— y no
+    // deja huérfanos. SIGTERM para un cierre limpio; SIGKILL como red de
+    // seguridad si algo se resiste.
+    try {
+      process.kill(-pid, 'SIGTERM');
+    } catch {
+      // grupo ya muerto: nada que hacer
+    }
+    const sigkill = setTimeout(() => {
+      try {
+        process.kill(-pid, 'SIGKILL');
+      } catch {
+        // ya terminó tras el SIGTERM: perfecto
+      }
+    }, 2000);
+    // Que este temporizador no impida que el proceso anfitrión salga.
+    sigkill.unref();
   }
 }

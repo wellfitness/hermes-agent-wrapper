@@ -57,12 +57,14 @@ Cada subcarpeta tiene su propio `README.md` con el detalle.
 - Las API keys viven en la instalación de Hermes (su propio `.env`), **fuera de este
   repositorio**. Nunca se commitean.
 
-## Estado y limitaciones
+## Multiplataforma
 
-- **Windows primero.** Las rutas por defecto y el cierre de procesos (`taskkill`)
-  asumen Windows. Funciona en macOS/Linux apuntando la variable `HERMES_EXE` al
-  binario, pero el cierre limpio de subprocesos en esos sistemas está pendiente de
-  portar.
+- **Windows / macOS / Linux.** El cierre de procesos es multiplataforma: en Windows
+  se mata el árbol con `taskkill /t`; en macOS/Linux se lanza Hermes como líder de
+  su propio grupo de procesos y se termina el grupo entero (`SIGTERM`, con `SIGKILL`
+  de respaldo), de modo que no quedan subprocesos huérfanos.
+- En macOS/Linux apunta la variable `HERMES_EXE` al binario de `hermes` (las rutas
+  por defecto asumen la instalación estándar en Windows).
 - La UI (`web/public/` y el webview de la extensión) y el transporte ACP
   (`acpClient.ts`, `acpTypes.ts`) están **duplicados a propósito** entre las dos
   carpetas. Si arreglas un bug en una, **replícalo en la otra**.
